@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">lab08 - Lukyanov</string>
+    <string name="lab_count">Count of points:</string>
+    <string name="lab_Xmin">Xmin:</string>
+    <string name="lab_Xmax">Xmax:</string>
+    <string name="btn_confirm">CONFIRM</string>
+    <string name="lab_Points">Change points</string>
+    <string name="lab_Func">Choose function</string>
 </resources>
