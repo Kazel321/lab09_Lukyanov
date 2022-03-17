@@ -5,11 +5,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Intent i;
     MySurface s;
     int N, func = 0;
-    Float Xmax, Xmin;
+    Float Xmax, Xmin, moveX = -1.0f, moveY = -1.0f;
 
     AlertDialog dialogFunc;
     @Override
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 func = position;
-                if (dialogFunc.isShowing())
+                //if (dialogFunc.isShowing())
                 dialogFunc.cancel();
                 onUpdate();
             }
@@ -72,11 +76,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        s.y0 = 0;
+        s.x0 = 0;
+        s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveX = v.getX();
+            }
+        });
 
+        s.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    moveX = event.getX();
+                    moveY = event.getY();
+                }
+                else if (event.getAction() == MotionEvent.ACTION_MOVE)
+                {
+                    if (event.getX() < moveX)
+                        s.setTranslationX(s.getTranslationX() - (moveX - event.getX()));
+                    else s.setTranslationX(s.getTranslationX() + (event.getX() - moveX));
+                    if (event.getY() < moveY)
+                       s.setTranslationY(s.getTranslationY() - (moveY - event.getY()));
+                    else s.setTranslationY(s.getTranslationY() + (event.getY() - moveY));
+
+                }
+                else if (event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    moveX = -1.0f;
+                    moveY = -1.0f;
+                }
+                return true;
+            }
+        });
 
         i = new Intent(this, DataActivity.class);
         startActivityForResult(i, 12345);
-
 
     }
 
@@ -98,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         s.update();
         s.invalidate();
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -132,8 +170,29 @@ public class MainActivity extends AppCompatActivity {
             case R.id.itm_Points:
                 i = new Intent(this, DataActivity.class);
                 startActivityForResult(i, 12345);
+                break;
             case R.id.itm_Func:
                 dialogFunc.show();
+                break;
+            case R.id.itm_Increase:
+                s.setScaleX(s.getScaleX()+2);
+                s.setScaleY(s.getScaleY()+2);
+                break;
+            case R.id.itm_Decrease:
+                if (s.getScaleX() != 1)
+                {
+                    s.setScaleX(s.getScaleX()-2);
+                    s.setScaleY(s.getScaleY()-2);
+                }
+                break;
+            case R.id.itm_Reset:
+            {
+                s.setTranslationX(0);
+                s.setTranslationY(0);
+                s.setScaleX(1);
+                s.setScaleY(1);
+                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

@@ -42,6 +42,16 @@ public class DataActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid Numeric Data", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (Xmax < Xmin)
+        {
+            Toast.makeText(this, "Xmin can't be more than Xmax", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (N <= 0)
+        {
+            Toast.makeText(this, "N should be more than 0", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         i = new Intent();
         i.putExtra("N", N);

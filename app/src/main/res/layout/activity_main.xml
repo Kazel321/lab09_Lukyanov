@@ -10,5 +10,6 @@
     <com.example.lab08_lukyanov.MySurface
         android:id="@+id/mySurface"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
+
 </LinearLayout>

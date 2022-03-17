@@ -6,4 +6,7 @@
     <string name="btn_confirm">CONFIRM</string>
     <string name="lab_Points">Change points</string>
     <string name="lab_Func">Choose function</string>
+    <string name="but_Big">Zoom</string>
+    <string name="but_Small">Unzoom</string>
+    <string name="but_Reset">Reset position</string>
 </resources>

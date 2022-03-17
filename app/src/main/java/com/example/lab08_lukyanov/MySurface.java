@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 
 import math.arr;
@@ -16,6 +18,7 @@ public class MySurface extends SurfaceView {
     float[] x;
     float[] y;
     int n;
+    float x0, y0, x1, y1;
     Paint p;
 
     public void update()
@@ -31,19 +34,16 @@ public class MySurface extends SurfaceView {
 
         p = new Paint();
         p.setColor(Color.RED);
-
         setWillNotDraw(false);
     }
+
 
     @Override
     protected void onDraw(Canvas canvas)
     {
         canvas.drawColor(Color.WHITE);
-
         int w = canvas.getWidth();
         int h = canvas.getHeight();
-
-        float x0 = 0.0f, y0 = 0.0f, x1, y1;
 
         for (int i = 0; i < n; i++)
         {
@@ -55,6 +55,7 @@ public class MySurface extends SurfaceView {
             x0 = x1;
             y0 = y1;
         }
+
         //super.onDraw(canvas);
     }
 }
