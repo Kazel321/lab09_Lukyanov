@@ -23,16 +23,16 @@ public class DataActivity extends AppCompatActivity {
         txt_Xmax = findViewById(R.id.txt_Xmax);
         txt_Xmin = findViewById(R.id.txt_Xmin);
     }
-
+    //Same as back button
     public void onConfirm(View v)
     {
         onBackPressed();
     }
 
     @Override
-    public void onBackPressed()
+    public void onBackPressed() //Override of back button
     {
-        try {
+        try { //Input control
             N = Integer.parseInt(txt_Count.getText().toString());
             Xmax = Float.parseFloat(txt_Xmax.getText().toString());
             Xmin = Float.parseFloat(txt_Xmin.getText().toString());
@@ -42,12 +42,12 @@ public class DataActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid Numeric Data", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (Xmax < Xmin)
+        if (Xmax < Xmin) //Min cannot be more than max
         {
             Toast.makeText(this, "Xmin can't be more than Xmax", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (N <= 0)
+        if (N <= 0) //N cannot be less than 0
         {
             Toast.makeText(this, "N should be more than 0", Toast.LENGTH_SHORT).show();
             return;

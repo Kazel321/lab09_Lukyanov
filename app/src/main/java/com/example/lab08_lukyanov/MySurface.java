@@ -55,7 +55,6 @@ public class MySurface extends SurfaceView {
             x0 = x1;
             y0 = y1;
         }
-
         //super.onDraw(canvas);
     }
 }

@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
     MySurface s;
     int N, func = 0;
     Float Xmax, Xmin, moveX = -1.0f, moveY = -1.0f;
-
     AlertDialog dialogFunc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -39,33 +39,34 @@ public class MainActivity extends AppCompatActivity {
 
         s = findViewById(R.id.mySurface);
 
+        i = new Intent(this, DataActivity.class);
+        startActivityForResult(i, 12345);
+        //Inflate dialog
         LayoutInflater dialogLayout = LayoutInflater.from(this);
         View dialogView = dialogLayout.inflate(R.layout.dialog_function, null);
         dialogFunc = new AlertDialog.Builder(this).create();
         dialogFunc.setView(dialogView);
-
+        //Funtions
         ArrayAdapter <String> adp = new <String> ArrayAdapter(this, android.R.layout.simple_list_item_1);
         adp.add("y = cos(x)");
         adp.add("y = sin(x)");
         adp.add("y = tan(x)");
         adp.add("y = cosh(x)");
         adp.add("y = sinh(x)");
-
+        //Event for choose item
         Spinner l_func;
-
         l_func = dialogView.findViewById(R.id.spr_Func);
         l_func.setAdapter(adp);
         final boolean[] spinInit = {false};
         l_func.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (!spinInit[0])
+                if (!spinInit[0]) //It need to first choice
                 {
                     spinInit[0] = true;
                     return;
                 }
-                func = position;
-                //if (dialogFunc.isShowing())
+                func = position; //Choose function
                 dialogFunc.cancel();
                 onUpdate();
             }
@@ -78,43 +79,27 @@ public class MainActivity extends AppCompatActivity {
 
         s.y0 = 0;
         s.x0 = 0;
-        s.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moveX = v.getX();
-            }
-        });
 
         s.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
+                if (event.getAction() == MotionEvent.ACTION_DOWN) //Start
                 {
                     moveX = event.getX();
                     moveY = event.getY();
                 }
-                else if (event.getAction() == MotionEvent.ACTION_MOVE)
+                else if (event.getAction() == MotionEvent.ACTION_MOVE) //Moving
                 {
-                    if (event.getX() < moveX)
+                    if (event.getX() < moveX) //left
                         s.setTranslationX(s.getTranslationX() - (moveX - event.getX()));
-                    else s.setTranslationX(s.getTranslationX() + (event.getX() - moveX));
-                    if (event.getY() < moveY)
+                    else s.setTranslationX(s.getTranslationX() + (event.getX() - moveX)); //right
+                    if (event.getY() < moveY) //up
                        s.setTranslationY(s.getTranslationY() - (moveY - event.getY()));
-                    else s.setTranslationY(s.getTranslationY() + (event.getY() - moveY));
-
-                }
-                else if (event.getAction() == MotionEvent.ACTION_UP)
-                {
-                    moveX = -1.0f;
-                    moveY = -1.0f;
+                    else s.setTranslationY(s.getTranslationY() + (event.getY() - moveY)); //down
                 }
                 return true;
             }
         });
-
-        i = new Intent(this, DataActivity.class);
-        startActivityForResult(i, 12345);
-
     }
 
 
@@ -164,28 +149,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
         switch (id)
         {
-            case R.id.itm_Points:
+            case R.id.itm_Points: //Start new activity to input data
                 i = new Intent(this, DataActivity.class);
                 startActivityForResult(i, 12345);
                 break;
-            case R.id.itm_Func:
+            case R.id.itm_Func: //Dialog to choose function
                 dialogFunc.show();
                 break;
-            case R.id.itm_Increase:
+            case R.id.itm_Increase: //Zoom
                 s.setScaleX(s.getScaleX()+2);
                 s.setScaleY(s.getScaleY()+2);
                 break;
-            case R.id.itm_Decrease:
+            case R.id.itm_Decrease: //Unzoom
                 if (s.getScaleX() != 1)
                 {
                     s.setScaleX(s.getScaleX()-2);
                     s.setScaleY(s.getScaleY()-2);
                 }
                 break;
-            case R.id.itm_Reset:
+            case R.id.itm_Reset: //Reset zoom and position
             {
                 s.setTranslationX(0);
                 s.setTranslationY(0);
